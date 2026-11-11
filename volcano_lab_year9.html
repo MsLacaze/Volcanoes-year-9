@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Volcano Lab — Year 9 Web Quest</title>
+<style>
+:root{--ink:#20243a;--cream:#fff8e9;--coral:#ff654f;--gold:#ffc857;--teal:#2a9d8f;--purple:#7353ba;--blue:#4f86c6}
+*{box-sizing:border-box}body{margin:0;font-family:Trebuchet MS,Arial,sans-serif;color:var(--ink);background:linear-gradient(135deg,#241b3d,#50365f 55%,#a34d45);min-height:100vh}
+header{padding:28px 18px 34px;text-align:center;color:white;background:radial-gradient(circle at 50% 120%,#ffb347 0 8%,transparent 35%),linear-gradient(140deg,#25234b,#6c3e68)}
+header .tag{display:inline-block;background:#ffffff22;border:1px solid #ffffff55;border-radius:30px;padding:7px 14px;font-weight:bold;letter-spacing:1px}
+h1{font-size:clamp(2.3rem,7vw,4.6rem);margin:14px 0 4px;text-shadow:3px 4px 0 #0003}header p{font-size:1.1rem;margin:8px auto;max-width:700px}
+.meter-wrap{max-width:720px;margin:22px auto 0;background:#ffffff35;border-radius:20px;height:14px;overflow:hidden}.meter{height:100%;width:0;background:var(--gold);transition:.4s}
+main{max-width:1050px;margin:-14px auto 50px;padding:0 16px}.intro{background:var(--cream);padding:18px 22px;border-radius:18px;box-shadow:0 8px 0 #1b1735;margin-bottom:20px;display:flex;gap:14px;align-items:center}.intro b{color:#a64237}
+.card{background:var(--cream);border-radius:22px;padding:24px;margin:20px 0;box-shadow:0 8px 0 #1b1735;position:relative;overflow:hidden}.card:after{content:attr(data-num);position:absolute;right:14px;top:-18px;font-size:6rem;font-weight:900;color:#00008;opacity:.06}
+.card h2{margin:0 0 8px;font-size:1.7rem}.sub{color:#5d6070;margin:0 0 18px}.emoji{font-size:2rem;margin-right:8px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:13px}
+.tile{background:white;border:2px solid #e9dfce;border-radius:15px;padding:14px}.tile h3{margin:4px 0 8px}.tile p{margin:6px 0;line-height:1.45}
+button,.btn{border:0;border-radius:12px;background:var(--coral);color:white;font-weight:bold;padding:11px 16px;cursor:pointer;font-size:1rem;box-shadow:0 4px 0 #b73e35;transition:.15s}button:hover{transform:translateY(-2px);filter:brightness(1.05)}button:active{transform:translateY(2px);box-shadow:0 1px 0 #b73e35}
+button.alt{background:var(--teal);box-shadow:0 4px 0 #17685e}button.gold{background:#e6a500;box-shadow:0 4px 0 #a77500;color:#2b2630}
+select,input[type=text]{padding:10px;border:2px solid #d9cfbf;border-radius:10px;font:inherit;background:white;max-width:100%}
+.question{background:white;padding:14px;border-radius:14px;margin:12px 0;border:2px solid #e9dfce}.question p{font-weight:bold;margin:0 0 10px}.choices{display:flex;flex-wrap:wrap;gap:8px}.choices button{background:#e9e5f3;color:#30264c;box-shadow:0 3px 0 #c6bddc}.choices button.selected{background:var(--purple);color:white;box-shadow:0 3px 0 #4b3482}
+.feedback{font-weight:bold;margin-top:10px;min-height:22px}.good{color:#16816f}.bad{color:#c34a39}
+.diagram{background:linear-gradient(#bde5ef 0 62%,#79b96c 62%);border-radius:18px;padding:10px;text-align:center;overflow:hidden}
+svg{max-width:100%;height:auto}.labelrow{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin:12px 0}.labelrow button{background:#fff;color:#332c4a;border:2px solid #d8cde8;box-shadow:none}
+.matchrow{display:grid;grid-template-columns:1fr 1fr;gap:10px;align-items:center;margin:10px 0}.matchrow label{font-weight:bold}
+details{background:white;border-radius:12px;padding:12px;margin:10px 0}summary{font-weight:bold;cursor:pointer}
+.scorebox{display:flex;gap:14px;flex-wrap:wrap;align-items:center;background:#262447;color:white;border-radius:16px;padding:16px}.score{font-size:1.7rem;font-weight:900;color:var(--gold)}
+footer{text-align:center;color:#fff;padding:10px 20px 35px}
+@media(max-width:600px){.card{padding:18px}.intro{align-items:flex-start}.matchrow{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<header>
+ <div class="tag">YEAR 9 SCIENCE • FIELD MISSION</div>
+ <h1>🌋 VOLCANO LAB</h1>
+ <p>Welcome, junior volcanologist! Explore how volcanoes work, investigate Earth's fiery hotspots and complete the challenges to earn your badge.</p>
+ <div class="meter-wrap"><div class="meter" id="meter"></div></div>
+ <p id="progressText">Mission progress: 0 of 5 challenges completed</p>
+</header>
+<main>
+ <div class="intro"><span style="font-size:2.5rem">🧑‍🔬</span><div><b>Your mission:</b> Complete all five stations. Read the clues, make your choices and check your answers. Keep your science notebook handy for any notes your teacher asks you to record.</div></div>
+
+ <section class="card" data-num="01">
+  <h2><span class="emoji">🧩</span>Station 1: Inside a volcano</h2>
+  <p class="sub">A volcano is an opening in Earth's crust where molten rock, gases and ash can escape. Explore the diagram, then label the parts.</p>
+  <div class="diagram">
+   <svg viewBox="0 0 640 330" role="img" aria-label="Cross section diagram of a volcano">
+    <path d="M25 238 Q145 230 205 205 Q260 180 300 70 Q320 35 340 70 Q390 180 445 205 Q510 235 615 238 L615 310 L25 310Z" fill="#8c5848" stroke="#5b382f" stroke-width="4"/>
+    <path d="M286 105 Q320 125 354 105 L430 238 L210 238Z" fill="#e66b42" opacity=".8"/>
+    <path d="M312 290 L312 112 Q320 92 328 112 L328 290" fill="#ffcf56" stroke="#a84230" stroke-width="3"/>
+    <ellipse cx="320" cy="292" rx="90" ry="17" fill="#ff6a3d" stroke="#a84230" stroke-width="3"/>
+    <path d="M300 65 Q320 48 340 65" stroke="#5b382f" stroke-width="8" fill="none"/>
+    <g fill="#555" opacity=".8"><circle cx="300" cy="25" r="9"/><circle cx="322" cy="12" r="12"/><circle cx="345" cy="28" r="8"/><circle cx="365" cy="12" r="6"/><circle cx="280" cy="8" r="6"/></g>
+    <g font-family="Arial" font-size="15" font-weight="bold" fill="#20243a">
+     <text x="20" y="270">🌋</text><text x="430" y="70">Ash cloud</text><path d="M425 75 L360 28" stroke="#20243a" stroke-width="2" fill="none"/>
+     <text x="455" y="145">Crater</text><path d="M450 150 L340 68" stroke="#20243a" stroke-width="2" fill="none"/>
+     <text x="455" y="195">Lava flow</text><path d="M450 200 L390 198" stroke="#20243a" stroke-width="2" fill="none"/>
+     <text x="20" y="150">Main vent</text><path d="M105 145 L310 165" stroke="#20243a" stroke-width="2" fill="none"/>
+     <text x="20" y="300">Magma chamber</text><path d="M160 294 L230 292" stroke="#20243a" stroke-width="2" fill="none"/>
+    </g>
+   </svg>
+  </div>
+  <p><b>Quick check:</b> Choose the correct meaning for each term.</p>
+  <div id="anatomy"></div><div class="feedback" id="anatomyFeedback"></div>
+  <button onclick="checkAnatomy()">Check my labels</button>
+ </section>
+
+ <section class="card" data-num="02">
+  <h2><span class="emoji">🌍</span>Station 2: Volcano hotspots</h2>
+  <p class="sub">Many volcanoes form near the edges of tectonic plates. The Pacific Ring of Fire is a huge zone of earthquakes and volcanoes around the Pacific Ocean.</p>
+  <div class="grid">
+   <div class="tile"><h3>🇳🇿 New Zealand</h3><p>Volcanic activity is linked to the boundary between the Pacific and Australian plates. The Taupō Volcanic Zone includes active volcanoes and geothermal features.</p></div>
+   <div class="tile"><h3>🇯🇵 Japan</h3><p>Japan sits where several tectonic plates meet. It has many volcanoes, including Mount Fuji.</p></div>
+   <div class="tile"><h3>🇺🇸 Hawaii</h3><p>The Hawaiian islands formed over a hotspot in the middle of the Pacific Plate, rather than at a plate boundary.</p></div>
+  </div>
+  <div class="question"><p>1. Which ocean is surrounded by the Ring of Fire?</p><div class="choices" data-group="q1"><button>Atlantic</button><button>Pacific</button><button>Indian</button></div><div class="feedback" id="f1"></div></div>
+  <div class="question"><p>2. What causes many volcanoes to form at plate boundaries?</p><div class="choices" data-group="q2"><button>Plates move and interact</button><button>The Moon pulls on the crust</button><button>Rainwater melts rocks</button></div><div class="feedback" id="f2"></div></div>
+  <div class="question"><p>3. Hawaii's volcanoes are mainly associated with…</p><div class="choices" data-group="q3"><button>A hotspot</button><button>A river delta</button><button>A collision between continents</button></div><div class="feedback" id="f3"></div></div>
+  <button onclick="checkMC('q1','Pacific','f1');checkMC('q2','Plates move and interact','f2');checkMC('q3','A hotspot','f3');complete('s2')">Check hotspot quiz</button>
+ </section>
+
+ <section class="card" data-num="03">
+  <h2><span class="emoji">⛰️</span>Station 3: Volcano shape-shifters</h2>
+  <p class="sub">Not all volcanoes look or erupt in the same way. Match each volcano type to its description.</p>
+  <div class="grid">
+   <div class="tile"><h3>🛡️ Shield volcano</h3><p>Wide with gentle slopes. Usually built by runny lava that can travel a long way.</p></div>
+   <div class="tile"><h3>🍦 Cinder cone</h3><p>Usually small and steep-sided, made from loose volcanic fragments that pile up around a vent.</p></div>
+   <div class="tile"><h3>🏔️ Composite volcano</h3><p>Tall, often steep-sided volcano built from layers of lava and ash/other volcanic material.</p></div>
+  </div>
+  <div id="matchTypes"></div><div class="feedback" id="matchFeedback"></div>
+  <button onclick="checkMatches()">Check my matches</button>
+  <details><summary>Need a hint?</summary>Think about the shape: a shield is broad and low; a cinder cone is small and steep; a composite volcano is built in layers.</details>
+ </section>
+
+ <section class="card" data-num="04">
+  <h2><span class="emoji">🔥</span>Station 4: Eruption investigation</h2>
+  <p class="sub">Magma is molten rock beneath Earth's surface. When it reaches the surface, it is called lava. The amount of gas and how easily magma flows help influence how explosive an eruption can be.</p>
+  <div class="grid">
+   <div class="tile"><h3>🌊 Runny magma</h3><p>Low viscosity (flows easily). Gas can often escape more easily, so eruptions may be gentler and produce lava flows.</p></div>
+   <div class="tile"><h3>🍯 Sticky magma</h3><p>High viscosity (flows slowly). Gas can become trapped, pressure can build and eruptions may be explosive.</p></div>
+  </div>
+  <div class="question"><p>Imagine thick, sticky magma traps lots of gas. What could happen?</p><div class="choices" data-group="q4"><button>A quiet, steady lava flow only</button><button>Pressure builds and an explosive eruption may occur</button><button>The volcano turns into ice</button></div><div class="feedback" id="f4"></div></div>
+  <div class="question"><p>What is molten rock called once it reaches Earth's surface?</p><div class="choices" data-group="q5"><button>Magma</button><button>Lava</button><button>Granite</button></div><div class="feedback" id="f5"></div></div>
+  <button onclick="checkMC('q4','Pressure builds and an explosive eruption may occur','f4');checkMC('q5','Lava','f5');complete('s4')">Submit investigation</button>
+ </section>
+
+ <section class="card" data-num="05">
+  <h2><span class="emoji">🧠</span>Station 5: Volcanologist final challenge</h2>
+  <p class="sub">A volcano near a town has started producing small earthquakes and steam. Scientists are monitoring it. Your job is to think like a volcanologist.</p>
+  <div class="question"><p>1. Why do scientists monitor earthquakes near volcanoes?</p><div class="choices" data-group="q6"><button>They can show rock and magma moving underground</button><button>They tell scientists the exact eruption time</button><button>They make the volcano erupt</button></div><div class="feedback" id="f6"></div></div>
+  <div class="question"><p>2. Which is the safest action if authorities issue an evacuation order?</p><div class="choices" data-group="q7"><button>Go closer to take photos</button><button>Follow official instructions and leave the area</button><button>Hide in a river valley</button></div><div class="feedback" id="f7"></div></div>
+  <div class="question"><p>3. True or false: Scientists can predict the exact date and time of every volcanic eruption.</p><div class="choices" data-group="q8"><button>True</button><button>False</button></div><div class="feedback" id="f8"></div></div>
+  <button onclick="checkMC('q6','They can show rock and magma moving underground','f6');checkMC('q7','Follow official instructions and leave the area','f7');checkMC('q8','False','f8');complete('s5')">Submit final challenge</button>
+ </section>
+
+ <section class="card">
+  <h2><span class="emoji">🏆</span>Mission debrief</h2>
+  <p>Before you finish, write a short response in your science book:</p>
+  <ol>
+   <li>Explain the difference between magma and lava.</li>
+   <li>Describe one way volcanoes are connected to tectonic plates.</li>
+   <li>Explain why some eruptions are more explosive than others.</li>
+   <li>Name one way people can stay safe during volcanic activity.</li>
+  </ol>
+  <div class="scorebox"><div>⭐ Challenges completed<br><span class="score" id="score">0 / 5</span></div><div id="badge">Complete the stations to earn your Junior Volcanologist badge!</div></div>
+  <p style="margin-top:16px"><button class="gold" onclick="window.print()">🖨️ Print / save mission</button> <button class="alt" onclick="resetAll()">↻ Reset activity</button></p>
+ </section>
+</main>
+<footer>VOLCANO LAB • Year 9 Science • Stay curious. Stay safe. 🌋</footer>
+<script>
+const done=new Set();
+function complete(id){done.add(id);updateProgress()}
+function updateProgress(){document.getElementById('score').textContent=done.size+' / 5';document.getElementById('meter').style.width=(done.size/5*100)+'%';document.getElementById('progressText').textContent='Mission progress: '+done.size+' of 5 challenges completed';document.getElementById('badge').textContent=done.size===5?'🎖️ JUNIOR VOLCANOLOGIST BADGE UNLOCKED! Excellent work, scientist!':'Keep going — '+(5-done.size)+' station(s) left until your badge!'}
+const anatomyItems=[
+ ['Magma chamber','A pool of molten rock beneath the volcano'],
+ ['Main vent','The passage magma travels up through'],
+ ['Crater','The bowl-shaped opening at the top'],
+ ['Lava flow','Molten rock moving across the surface'],
+ ['Ash cloud','Tiny fragments of rock and volcanic glass blasted into the air']
+];
+document.getElementById('anatomy').innerHTML=anatomyItems.map((x,i)=>`<div class="matchrow"><label>${x[0]}</label><select id="a${i}"><option value="">Choose a meaning…</option>${anatomyItems.map(y=>`<option>${y[1]}</option>`).join('')}</select></div>`).join('');
+function checkAnatomy(){let n=0;anatomyItems.forEach((x,i)=>{if(document.getElementById('a'+i).value===x[1])n++});let f=document.getElementById('anatomyFeedback');f.textContent=`You got ${n} out of 5 correct.`;f.className='feedback '+(n===5?'good':'bad');if(n===5)complete('s1')}
+const types=[['Shield volcano','Wide, gentle slopes formed by runny lava'],['Cinder cone','Small, steep cone made from loose volcanic fragments'],['Composite volcano','Layered volcano made from lava and ash/other material']];
+document.getElementById('matchTypes').innerHTML=types.map((x,i)=>`<div class="matchrow"><label>${x[0]}</label><select id="m${i}"><option value="">Choose description…</option>${types.map(y=>`<option>${y[1]}</option>`).join('')}</select></div>`).join('');
+function checkMatches(){let n=0;types.forEach((x,i)=>{if(document.getElementById('m'+i).value===x[1])n++});let f=document.getElementById('matchFeedback');f.textContent=`${n}/3 correct.`;f.className='feedback '+(n===3?'good':'bad');if(n===3)complete('s3')}
+document.querySelectorAll('.choices button').forEach(b=>b.addEventListener('click',()=>{b.parentElement.querySelectorAll('button').forEach(x=>x.classList.remove('selected'));b.classList.add('selected')}));
+function checkMC(group,answer,feedback){let selected=document.querySelector(`[data-group="${group}"] .selected`);let f=document.getElementById(feedback);if(!selected){f.textContent='Choose an answer first.';f.className='feedback bad';return}let ok=selected.textContent===answer;f.textContent=ok?'Correct! Nice work.':'Not quite — have another think and try again.';f.className='feedback '+(ok?'good':'bad')}
+function resetAll(){done.clear();document.querySelectorAll('select').forEach(s=>s.value='');document.querySelectorAll('.choices button').forEach(b=>b.classList.remove('selected'));document.querySelectorAll('.feedback').forEach(f=>{f.textContent='';f.className='feedback'});updateProgress();window.scrollTo({top:0,behavior:'smooth'})}
+updateProgress();
+</script>
+</body>
+</html>
